@@ -1,7 +1,16 @@
-function Button() {
+function Button(props) {
   return (
     <div>
-      <button className="btn-check">Check Answers</button>
+      {props.results ? (
+        <div>
+          <p>You scored /5 correct answers</p>
+          <button onClick={props.restartQuiz}>Play Again</button>
+        </div>
+      ) : (
+        <div>
+          <button onClick={props.checkAnswers}>Check Answers</button>
+        </div>
+      )}
     </div>
   );
 }

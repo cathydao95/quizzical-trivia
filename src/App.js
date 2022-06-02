@@ -1,28 +1,33 @@
+import { nanoid } from "nanoid";
 import { useState, useEffect } from "react";
 import Quiz from "./Components/Quiz";
-import { nanoid } from "nanoid";
+import StartQuiz from "./Components/StartQuiz";
 
 function App() {
-  const [game, setGame] = useState(false);
   const [quiz, setQuiz] = useState([]);
+  const [results, setResults] = useState(false);
+
+  function startQuiz() {
+    renderQuiz();
+  }
 
   function renderQuiz() {
-    setGame(true);
     fetch(
       "https://opentdb.com/api.php?amount=5&category=9&difficulty=medium&type=multiple"
     )
       .then((res) => res.json())
       .then((data) =>
         setQuiz(
-          data.results.map((result) => {
+          data.results.map((item) => {
             return {
               id: nanoid(),
-              question: result.question,
-              correctAnswer: result.correct_answer,
+              question: item.question,
+              correctAnswer: item.correct_answer,
               answers: shuffle([
-                ...result.incorrect_answers,
-                result.correct_answer,
+                ...item.incorrect_answers,
+                item.correct_answer,
               ]),
+              isAttemped: false,
               scored: false,
             };
           })
@@ -30,41 +35,68 @@ function App() {
       );
   }
 
-  console.log(quiz);
-
   function shuffle(arr) {
-    const newArray = arr.map((item) => {
+    let array = arr.map((ans) => {
       return {
         id: nanoid(),
-        isHeld: false,
-        answer: item,
+        isSelected: false,
+        answer: ans,
       };
     });
-    for (let i = newArray.length - 1; i > 0; i--) {
+    for (let i = array.length - 1; i >= 0; i--) {
       const randomIndex = Math.floor(Math.random() * (i + 1));
-      newArray.push(newArray[randomIndex]);
-      newArray.splice(randomIndex, 1);
+      array.push(array[randomIndex]);
+      array.splice(randomIndex, 1);
     }
-    return newArray;
+    return array;
   }
 
+  function handleSelected(questionId, answerId) {
+    console.log(questionId, answerId);
+    setQuiz((prevQuiz) =>
+      prevQuiz.map((item) => {
+        return item.id === questionId
+          ? {
+              ...item,
+              answers: item.answers.map((ans) => {
+                return ans.id === answerId
+                  ? { ...ans, isSelected: !ans.isSelected }
+                  : ans;
+              }),
+              scored:
+                item.correct ===
+                item.answers.find((ans) => ans.id === answerId).answer,
+              isAttemped: !item.isAttemped,
+            }
+          : item;
+      })
+    );
+  }
+
+  function checkAnswers() {
+    console.log("checking");
+    setResults(true);
+  }
+
+  function restartQuiz() {
+    console.log("restart quiz");
+  }
   return (
-    <main className="main-overlay">
-      <div className="main-container">
-        {game ? (
-          <Quiz quiz={quiz} />
+    <div>
+      <div>
+        {quiz.length ? (
+          <Quiz
+            quiz={quiz}
+            handleSelected={handleSelected}
+            checkAnswers={checkAnswers}
+            restartQuiz={restartQuiz}
+            results={results}
+          />
         ) : (
-          <div className="container">
-            <h1>Quizzical</h1>
-            <p>Let's play Trivia! How many questions can you get?</p>
-            <button onClick={renderQuiz} className="btn-start">
-              Start Quiz
-            </button>
-          </div>
+          <StartQuiz startQuiz={startQuiz} />
         )}
       </div>
-    </main>
+    </div>
   );
 }
-
 export default App;

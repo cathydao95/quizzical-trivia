@@ -1,10 +1,19 @@
-import { nanoid } from "nanoid";
-
 function Questions(props) {
   return (
-    <div className="quiz-container">
-      <h2 className="quiz-question">{props.question}</h2>
-      <div className="quiz-answers">{props.answers}</div>
+    <div>
+      <h1>{props.item.question}</h1>
+      <div>
+        {props.item.answers.map((ans) => {
+          return (
+            <p
+              key={ans.id}
+              onClick={() => props.handleSelected(props.item.id, ans.id)}
+            >
+              {ans.answer}
+            </p>
+          );
+        })}
+      </div>
     </div>
   );
 }
