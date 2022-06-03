@@ -3,7 +3,7 @@ function Button(props) {
     <div>
       {props.results ? (
         <div>
-          <p>You scored /5 correct answers</p>
+          <p>You scored {props.scored}/5 correct answers</p>
           <button onClick={props.restartQuiz}>Play Again</button>
         </div>
       ) : (

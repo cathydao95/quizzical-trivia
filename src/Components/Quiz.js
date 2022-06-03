@@ -10,6 +10,7 @@ function Quiz(props) {
             key={item.id}
             item={item}
             handleSelected={props.handleSelected}
+            results={props.results}
           />
         );
       })}
@@ -17,6 +18,7 @@ function Quiz(props) {
         checkAnswers={props.checkAnswers}
         restartQuiz={props.restartQuiz}
         results={props.results}
+        scored={props.scored}
       />
     </div>
   );

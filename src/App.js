@@ -6,6 +6,7 @@ import StartQuiz from "./Components/StartQuiz";
 function App() {
   const [quiz, setQuiz] = useState([]);
   const [results, setResults] = useState(false);
+  const [scored, setScored] = useState(0);
 
   function startQuiz() {
     renderQuiz();
@@ -61,10 +62,10 @@ function App() {
               answers: item.answers.map((ans) => {
                 return ans.id === answerId
                   ? { ...ans, isSelected: !ans.isSelected }
-                  : ans;
+                  : { ...ans, isSelected: false };
               }),
               scored:
-                item.correct ===
+                item.correctAnswer ===
                 item.answers.find((ans) => ans.id === answerId).answer,
               isAttemped: !item.isAttemped,
             }
@@ -75,11 +76,26 @@ function App() {
 
   function checkAnswers() {
     console.log("checking");
-    setResults(true);
+    const allSelected = quiz.map((item) =>
+      item.answers.some((ans) => ans.isSelected)
+    );
+    const allQuestionsSelected = allSelected.every((item) => item);
+    if (allQuestionsSelected) {
+      let scored = quiz.filter((item) => item.scored);
+      setScored(scored.length);
+      setResults(true);
+      console.log(scored.length);
+    } else {
+      alert("please attempt all questions");
+    }
   }
 
   function restartQuiz() {
     console.log("restart quiz");
+    setQuiz([]);
+    setResults(false);
+    setScored(0);
+    startQuiz();
   }
   return (
     <div>
@@ -91,6 +107,7 @@ function App() {
             checkAnswers={checkAnswers}
             restartQuiz={restartQuiz}
             results={results}
+            scored={scored}
           />
         ) : (
           <StartQuiz startQuiz={startQuiz} />
