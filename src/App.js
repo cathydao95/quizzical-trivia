@@ -12,6 +12,7 @@ function App() {
     renderQuiz();
   }
 
+  // Fetch Data from Trivia API
   function renderQuiz() {
     fetch(
       "https://opentdb.com/api.php?amount=5&category=9&difficulty=medium&type=multiple"
@@ -24,6 +25,7 @@ function App() {
               id: nanoid(),
               question: item.question,
               correctAnswer: item.correct_answer,
+              // API separates incorrect and correct answer, so shuffle to join and randomize answers
               answers: shuffle([
                 ...item.incorrect_answers,
                 item.correct_answer,
@@ -37,6 +39,7 @@ function App() {
   }
 
   function shuffle(arr) {
+    // map through answers and assign each answer an ID, isSelected, and answer property
     let array = arr.map((ans) => {
       return {
         id: nanoid(),
@@ -44,6 +47,7 @@ function App() {
         answer: ans,
       };
     });
+    // randomize array of incorrect answers and answers
     for (let i = array.length - 1; i >= 0; i--) {
       const randomIndex = Math.floor(Math.random() * (i + 1));
       array.push(array[randomIndex]);
