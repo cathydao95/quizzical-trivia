@@ -56,6 +56,7 @@ function App() {
     return array;
   }
 
+  // When answer clicked, mark as selected, score is marked answer is correct, and mark as attempted.
   function handleSelected(questionId, answerId) {
     console.log(questionId, answerId);
     setQuiz((prevQuiz) =>
@@ -78,6 +79,7 @@ function App() {
     );
   }
 
+  // on submit, check all at least one answer in each question checked and set score as length of correct scored
   function checkAnswers() {
     console.log("checking");
     const allSelected = quiz.map((item) =>
@@ -94,6 +96,7 @@ function App() {
     }
   }
 
+  // restat quiz function
   function restartQuiz() {
     console.log("restart quiz");
     setQuiz([]);
@@ -106,6 +109,7 @@ function App() {
       <div>
         {quiz.length ? (
           <Quiz
+            // pass quiz to child components
             quiz={quiz}
             handleSelected={handleSelected}
             checkAnswers={checkAnswers}
