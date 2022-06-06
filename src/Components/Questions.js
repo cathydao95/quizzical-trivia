@@ -14,6 +14,7 @@ function Questions(props) {
     <div>
       <h1>{props.item.question}</h1>
       <div>
+        {/* map through each answer and on click, run handleSelected function. Also if answer is selected, determine background color */}
         {props.item.answers.map((ans) => {
           return (
             <p
