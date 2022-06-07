@@ -4,6 +4,7 @@ import Button from "./Button";
 function Quiz(props) {
   return (
     <div>
+      {/* map through each  quiz items */}
       {props.quiz.map((item) => {
         return (
           <Questions
