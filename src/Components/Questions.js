@@ -1,5 +1,6 @@
 function Questions(props) {
   let bgColor;
+  // background color of answer if selected dependent selected and on scored or not scored
   if (props.results) {
     if (props.item.scored) {
       bgColor = "#94D7A2";
