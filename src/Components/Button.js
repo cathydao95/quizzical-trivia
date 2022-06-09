@@ -1,6 +1,7 @@
 function Button(props) {
   return (
     <div>
+      {/* if results is true, show score and play again button, else show check answers button */}
       {props.results ? (
         <div>
           <p>You scored {props.scored}/5 correct answers</p>
