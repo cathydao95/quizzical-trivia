@@ -21,6 +21,7 @@ function Questions(props) {
             <p
               style={{ backgroundColor: ans.isSelected && bgColor }}
               key={ans.id}
+              // pass in current clicked quesion id and selected answer id
               onClick={() => props.handleSelected(props.item.id, ans.id)}
             >
               {ans.answer}
