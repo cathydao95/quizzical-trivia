@@ -3,6 +3,7 @@ import Button from "./Button";
 
 function Quiz(props) {
   return (
+    // question and button child components
     <div>
       {/* map through each  quiz items */}
       {props.quiz.map((item) => {
@@ -15,6 +16,7 @@ function Quiz(props) {
           />
         );
       })}
+
       <Button
         checkAnswers={props.checkAnswers}
         restartQuiz={props.restartQuiz}
